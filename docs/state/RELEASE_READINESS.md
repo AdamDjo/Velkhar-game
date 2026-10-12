@@ -112,6 +112,12 @@ Sel — sans modifier le contrat backend ni les règles de jeu. Ce jalon retire 
 route de partie mais ne change pas le `NO-GO` tant que la boucle roguelike complète n'est pas
 validée.
 
+État attendu après merge de #339 : les fenêtres de la Game Session hiérarchisent clairement fiche,
+préférences, sortie et abandon, sans action factice ni titre répété. L’état vide de l’Inventaire
+reste compact, tandis que focus clavier, fermeture et plein écran mobile sont préservés. Cette
+finition ne change ni la logique du run ni le `NO-GO` tant que la boucle roguelike complète n’est pas
+validée.
+
 ## Post-déploiement
 
 Profil complet (#136), Chronologie (#130), Galerie (#131), World Map (#127), linking

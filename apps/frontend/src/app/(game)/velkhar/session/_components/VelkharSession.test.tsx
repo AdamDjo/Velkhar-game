@@ -331,7 +331,8 @@ describe('VelkharSession', () => {
     await user.click(screen.getByRole('button', { name: 'Open character sheet' }))
 
     expect(screen.getByRole('dialog', { name: 'Character panel' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 3, name: MOCK_CHARACTER.name })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 2, name: 'Character sheet' })).toBeInTheDocument()
+    expect(screen.getAllByRole('heading', { name: MOCK_CHARACTER.name })).toHaveLength(1)
 
     await user.click(screen.getByRole('button', { name: 'Close panel' }))
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
@@ -356,10 +357,17 @@ describe('VelkharSession', () => {
     ).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Bag slot 4, empty' })).toBeDisabled()
 
+    const emptyDetail = screen.getByText('Select an available item to inspect it.').closest('aside')
+    expect(emptyDetail).toHaveClass('velkhar-inventory__detail--empty')
+
     await user.click(screen.getByRole('button', { name: /Bag slot 1: Waterskin/ }))
     expect(screen.getByRole('heading', { name: 'Waterskin' })).toBeInTheDocument()
     expect(screen.getByRole('group', { name: 'Authorized actions' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'use' })).toBeInTheDocument()
+    expect(emptyDetail).not.toHaveClass('velkhar-inventory__detail--empty')
+    expect(screen.getByRole('heading', { name: 'Waterskin' }).closest('aside')).not.toHaveClass(
+      'velkhar-inventory__detail--empty'
+    )
   })
 
   it('restaure le focus après Escape', async () => {
@@ -383,6 +391,12 @@ describe('VelkharSession', () => {
     await screen.findByText('Salt moves across the road.')
     await user.click(screen.getByRole('button', { name: 'Options' }))
     expect(screen.getByRole('button', { name: 'Close panel' })).toHaveFocus()
+    expect(screen.getByRole('heading', { name: 'Preferences' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Leave the session' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'End the road' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Resume the journey' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Settings — coming soon' })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Return to The Blind One' })).toBeInTheDocument()
 
     await user.tab({ shift: true })
     expect(screen.getByRole('button', { name: 'Abandon this run' })).toHaveFocus()
