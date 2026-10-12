@@ -65,21 +65,10 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--breath-aqua) 16%, transparent);
 }
 
-.velkhar-session__nav-title {
-  display: block;
-  max-width: 100%;
-  width: 100%;
-}
-
 .velkhar-session__main {
   box-sizing: border-box;
   container-type: inline-size;
-  display: flex;
-  justify-content: center;
-  margin-inline: auto;
-  max-width: 46rem;
   min-height: 0;
-  padding: clamp(1rem, 2.2dvh, 1.35rem) clamp(1.25rem, 2.4vw, 2.5rem) 2.5rem;
   position: relative;
   width: 100%;
 }
@@ -87,41 +76,13 @@
 .velkhar-session__stage {
   animation: gs-scene-enter var(--motion-page) var(--ease-velkhar-out) both;
   display: grid;
-  gap: clamp(0.42rem, 0.7vw, 0.7rem);
+  gap: var(--game-scene-reader-gap);
   width: 100%;
 }
 
-.velkhar-session__reader-heading,
 .velkhar-session__stage > :is(.game-session-narrative, .game-session-choices, .narrative-composer),
 .velkhar-session__composer-hint {
   width: 100%;
-}
-
-.velkhar-session__visual {
-  align-items: end;
-  display: flex;
-  height: 100%;
-  padding: clamp(1.25rem, 3vw, 3rem);
-}
-
-.velkhar-session__visual-location {
-  color: color-mix(in srgb, var(--salt-white) 76%, transparent);
-  font-family: var(--font-game-display);
-  font-size: var(--text-game-section);
-  letter-spacing: 0.08em;
-  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.95);
-  text-transform: uppercase;
-}
-
-.velkhar-session__reader-heading h1 {
-  color: var(--material-gold-bright);
-  font-family: var(--font-game-display);
-  font-size: var(--text-game-heading);
-  font-weight: 400;
-  letter-spacing: 0.045em;
-  line-height: 1.05;
-  margin: 0;
-  text-transform: uppercase;
 }
 
 @keyframes gs-scene-enter {
@@ -139,20 +100,6 @@
   transition:
     filter var(--motion-step) var(--ease-velkhar-standard),
     opacity var(--motion-step) var(--ease-velkhar-standard);
-}
-
-/* La couleur et la famille viennent du composant : la scene ne regle ici
-   que ce qui lui est propre — un corps plus dense, sans italique. */
-.game-session-narrative .narrative-passage {
-  font-size: var(--text-game-body);
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.5;
-  max-width: 40rem;
-}
-
-.game-session-narrative .narrative-passage p + p {
-  margin-top: 0.65rem;
 }
 
 .game-session-narrative .narrative-passage p:first-child::first-letter {
@@ -195,37 +142,6 @@
   }
 }
 
-.game-session-choices {
-  gap: clamp(0.35rem, 0.52vw, 0.55rem);
-}
-
-.game-session-choice {
-  font-size: var(--text-game-body-sm);
-  min-height: 5.25rem;
-  padding: 0.7rem clamp(5.5rem, 16cqw, 8rem) 0.7rem clamp(5.5rem, 12cqw, 7rem);
-}
-
-.game-session-choice::before {
-  left: 4rem;
-}
-
-.game-session-choice .dialogue-choice__number {
-  aspect-ratio: 607 / 761;
-  background: url('/encre-de-sel/frames/choice-number-plate.webp') center / contain no-repeat;
-  height: min(5.25rem, calc(100% - 0.25rem));
-  inset-block: auto;
-  left: 0.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: auto;
-  z-index: 1;
-}
-
-.game-session-choice .dialogue-choice__label {
-  display: block;
-  width: 100%;
-}
-
 .game-session-choice__text {
   display: block;
   min-width: 0;
@@ -241,10 +157,6 @@
   position: absolute;
   white-space: nowrap;
   width: 1px;
-}
-
-.velkhar-session__stage .narrative-composer .game-textarea {
-  min-height: 3.5rem;
 }
 
 .velkhar-session__composer-hint {
@@ -374,32 +286,27 @@
 }
 
 .velkhar-session__state {
-  align-items: center;
+  align-items: start;
   align-self: center;
-  background: var(--ink-black);
-  border: 0;
-  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.54);
+  backdrop-filter: blur(var(--auth-prompt-blur));
+  background: var(--auth-form-background);
+  border: var(--auth-form-border-width) solid transparent;
+  border-image: var(--control-field-frame) var(--auth-form-border-slice) fill /
+    var(--auth-form-border-width);
+  box-shadow: var(--auth-form-shadow);
   display: grid;
-  gap: 0.75rem;
-  justify-items: center;
+  gap: var(--auth-section-gap);
+  justify-items: start;
   margin: auto;
   max-width: 38rem;
-  padding: clamp(1.5rem, 4vw, 3rem);
+  padding: var(--auth-form-padding);
   position: relative;
-  text-align: center;
+  text-align: left;
+  width: min(100%, var(--auth-form-width));
 }
 
 .velkhar-session__state::before {
-  background: transparent;
-  border: 22px solid transparent;
-  border-image: url('/encre-de-sel/frames/narrative-surface-frame.webp') 38 52 fill / 22px 30px
-    stretch;
-  box-sizing: border-box;
-  content: '';
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
-  z-index: 0;
+  display: none;
 }
 
 .velkhar-session__state > * {
@@ -408,226 +315,50 @@
 }
 
 .velkhar-session__state h1 {
-  color: var(--salt-white);
-  font-family: var(--font-game-display);
-  font-size: var(--text-game-heading);
-  font-weight: 500;
+  color: var(--control-text);
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 400;
+  line-height: 1.02;
   margin: 0;
+  text-transform: uppercase;
+  text-wrap: balance;
 }
 
 .velkhar-session__state p {
-  color: var(--salt-muted);
-  font-family: var(--font-game-body);
-  font-size: var(--text-game-body);
+  color: var(--control-text-muted);
+  font-family: var(--font-serif);
+  font-size: var(--text-game-lead);
+  line-height: 1.45;
   margin: 0;
+  max-width: var(--auth-copy-max);
+  text-wrap: pretty;
 }
 
-.velkhar-session__state a {
-  color: var(--material-gold-bright);
-  font-family: var(--font-game-display);
-  font-size: var(--text-game-label);
-  margin-top: 0.4rem;
-  text-decoration-color: color-mix(in srgb, var(--fresh-blood) 70%, transparent);
-  text-underline-offset: 0.35rem;
+.velkhar-session__state > .game-icon {
+  height: 2rem;
+  opacity: 0.82;
+  width: 2rem;
 }
 
-.velkhar-survival-hud {
-  align-items: center;
-  background: var(--ink-black);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  height: clamp(5.5rem, 12.2dvh, 7.25rem);
-  min-height: 0;
-  padding-inline: 0;
-  position: relative;
-}
-
-.velkhar-survival-hud::before {
-  background: url('/encre-de-sel/chrome/footer-separator.webp') center -5px / 100% 14px no-repeat;
-  content: '';
-  height: 7px;
-  left: 0;
-  pointer-events: none;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 2;
-}
-
-.velkhar-survival-hud__stats {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(7.5rem, 1fr));
-  height: 100%;
-  min-width: 0;
-}
-
-.velkhar-survival-hud__stat {
-  --hud-stat-color: var(--material-gold);
-
-  align-items: center;
-  display: grid;
-  gap: 0.65rem;
-  grid-template-columns: 3.2rem minmax(0, 1fr);
-  min-width: 0;
-  padding-inline: clamp(0.55rem, 1.3vw, 1.25rem);
-  position: relative;
-}
-
-.velkhar-survival-hud__stat:not(:last-child)::after {
-  background: url('/encre-de-sel/chrome/hud-stat-separator.webp') center / 100% 100% no-repeat;
-  bottom: 0;
-  content: '';
-  pointer-events: none;
-  position: absolute;
-  right: -6px;
-  top: 0;
-  width: 12px;
-}
-
-.velkhar-survival-hud__stat[data-tone='blood'] {
-  --hud-stat-color: var(--fresh-blood);
-}
-
-.velkhar-survival-hud__stat[data-tone='breath'] {
-  --hud-stat-color: var(--breath-aqua);
-}
-
-.velkhar-survival-hud__stat[data-tone='hunger'] {
-  --hud-stat-color: var(--hunger-ochre);
-}
-
-.velkhar-survival-hud__stat[data-tone='thirst'] {
-  --hud-stat-color: var(--thirst-salt);
-}
-
-.velkhar-survival-hud__stat[data-tone='calamine'] {
-  --hud-stat-color: var(--calamine);
-}
-
-.velkhar-survival-hud__stat-icon {
-  display: inline-flex;
-  height: 4.8rem;
-  justify-content: center;
-  width: 3.6rem;
-}
-
-.velkhar-survival-hud__stat-icon img {
-  height: 100%;
-  object-fit: contain;
+.velkhar-session__state > :is(.game-button, .game-link) {
+  margin-top: var(--auth-action-gap);
   width: 100%;
-}
-
-.velkhar-survival-hud__stat-copy {
-  display: grid;
-  gap: 0.45rem;
-  min-width: 0;
-}
-
-.velkhar-survival-hud__stat-heading {
-  align-items: baseline;
-  color: var(--hud-stat-color);
-  display: flex;
-  font-family: var(--font-game-display);
-  font-size: var(--text-game-stat-label);
-  gap: 0.65rem;
-  justify-content: flex-start;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.velkhar-survival-hud__stat-heading strong {
-  font-weight: 400;
-}
-
-.velkhar-survival-hud__stat-heading span {
-  font-family: var(--font-game-display);
-  font-size: var(--text-game-stat-value);
-  font-variant-numeric: tabular-nums;
-}
-
-.velkhar-survival-hud__stat-track {
-  display: block;
-  height: 0.8rem;
-  position: relative;
-}
-
-.velkhar-survival-hud__stat-track::before,
-.velkhar-survival-hud__stat-track::after {
-  background: var(--hud-stat-color);
-  content: '';
-  inset: 0;
-  mask: url('/encre-de-sel/chrome/hud-bar-mask.webp') center / 100% 100% no-repeat;
-  position: absolute;
-}
-
-.velkhar-survival-hud__stat-track::before {
-  opacity: 0.06;
-}
-
-.velkhar-survival-hud__stat-track::after {
-  clip-path: inset(0 calc(100% - var(--hud-stat-value)) 0 0);
-  transition: clip-path var(--motion-step) var(--ease-velkhar-standard);
-}
-
-.velkhar-survival-hud__tools {
-  align-items: center;
-  box-sizing: border-box;
-  display: flex;
-  gap: clamp(0.6rem, 1vw, 1rem);
-  justify-content: center;
-  padding-left: clamp(1rem, 2vw, 2rem);
-  width: clamp(17.5rem, 21.75vw, 22.75rem);
-}
-
-.velkhar-survival-hud__tools button {
-  align-items: center;
-  appearance: none;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  display: flex;
-  height: clamp(3.5rem, 8dvh, 4.6rem);
-  justify-content: center;
-  padding: 0;
-  position: relative;
-  transition:
-    filter var(--motion-fast) ease,
-    transform var(--motion-fast) ease;
-  width: clamp(3.5rem, 8dvh, 4.6rem);
-}
-
-.velkhar-survival-hud__tools button:hover {
-  filter: brightness(1.14) contrast(1.04) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.62));
-  transform: translateY(-2px);
-}
-
-.velkhar-survival-hud__tools button:focus-visible {
-  filter: brightness(1.16) contrast(1.06)
-    drop-shadow(0 0 9px color-mix(in srgb, var(--fresh-blood) 38%, transparent));
-  outline: 0;
-}
-
-.velkhar-survival-hud__tools button img {
-  filter: contrast(1.08);
-  object-fit: fill;
-  z-index: 1;
 }
 
 .velkhar-session-window {
   --font-game-heading: var(--font-game-display);
   --game-window-backdrop: rgba(0, 0, 0, 0.72);
-  --game-window-background: rgba(6, 5, 4, 0.985);
-  --game-window-border-color: var(--line-gold);
-  --game-window-right: clamp(1rem, 3vw, 3rem);
-  --game-window-shadow: 0 22px 80px rgba(0, 0, 0, 0.68);
-  --game-window-top: 5.5rem;
   --game-window-width: min(46rem, calc(100vw - 2rem));
 }
 
 .velkhar-session-window .game-window {
   animation: gs-tool-enter var(--motion-step) var(--ease-velkhar-out) both;
-  bottom: clamp(7.75rem, 15dvh, 9.25rem);
+  left: 50%;
   max-width: min(92vw, 46rem);
+  right: auto;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .velkhar-session-window--inventory {
@@ -635,25 +366,47 @@
 }
 
 .velkhar-session-window--inventory .game-window {
+  max-height: min(88dvh, 58rem);
   max-width: min(96vw, 68rem);
+}
+
+.velkhar-session-window--inventory .game-window__content {
+  max-height: calc(min(88dvh, 58rem) - 5.25rem);
+}
+
+.velkhar-session-window--journal {
+  --game-window-width: min(52rem, calc(100vw - 2rem));
+}
+
+.velkhar-session-window--journal .game-window {
+  max-height: min(88dvh, 52rem);
+  max-width: min(94vw, 52rem);
+}
+
+.velkhar-session-window--menu {
+  --game-window-width: min(38rem, calc(100vw - 2rem));
+}
+
+.velkhar-session-window--menu .game-window {
+  max-width: min(92vw, 38rem);
 }
 
 @keyframes gs-tool-enter {
   from {
     opacity: 0;
-    translate: 1rem 0;
+    translate: 0 0.75rem;
   }
 }
 
 .velkhar-session-window .game-window__header h2 {
   font-size: var(--text-game-modal-title);
-  letter-spacing: 0.045em;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 
 .velkhar-session-window .game-window__content {
   font-size: var(--text-game-body);
-  text-shadow: 0 1px 2px var(--ink-black);
+  padding-bottom: 2.35rem;
 }
 
 .velkhar-session-window
@@ -668,7 +421,10 @@
     .velkhar-inventory__summary > span,
     .velkhar-inventory-slot > span,
     .velkhar-inventory__specials p,
-    .velkhar-inventory__empty-keyring
+    .velkhar-inventory__empty-keyring,
+    .velkhar-travel-journal__empty p,
+    .velkhar-travel-journal__state,
+    .velkhar-travel-journal__details dt
   ) {
   color: color-mix(in srgb, var(--salt-white) 88%, var(--material-gold));
 }
@@ -677,7 +433,8 @@
   :is(
     .velkhar-session-window__attributes dt,
     .velkhar-session-window__attributes small,
-    .velkhar-session-window__section-heading span
+    .velkhar-session-window__section-heading span,
+    .velkhar-travel-journal__marks
   ) {
   color: color-mix(in srgb, var(--salt-white) 76%, transparent);
 }
@@ -839,7 +596,7 @@
 
 .velkhar-character-sheet__survival > div {
   background: transparent;
-  border-bottom: 1px solid color-mix(in srgb, var(--fresh-blood) 28%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--material-gold) 28%, transparent);
   box-shadow: none;
   display: grid;
   gap: 0.25rem;
@@ -863,6 +620,119 @@
 
 .velkhar-character-sheet__survival [data-danger='true'] dd {
   color: color-mix(in srgb, var(--fresh-blood) 70%, var(--salt-white));
+}
+
+.velkhar-travel-journal {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.velkhar-travel-journal__contract {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.velkhar-travel-journal__heading,
+.velkhar-travel-journal__empty {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.velkhar-travel-journal__heading h3,
+.velkhar-travel-journal__empty h3 {
+  color: var(--material-gold-bright);
+  font-family: var(--font-game-heading);
+  font-size: var(--text-game-heading);
+  font-weight: 500;
+  line-height: 1.12;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.velkhar-travel-journal__empty p:last-child {
+  color: var(--salt-muted);
+  font-family: var(--font-game-body);
+  font-size: var(--text-game-body-sm);
+  line-height: 1.5;
+  margin: 0.35rem 0 0;
+  text-wrap: pretty;
+}
+
+.velkhar-travel-journal__state {
+  align-items: center;
+  border-block: 1px solid color-mix(in srgb, var(--material-gold) 30%, transparent);
+  display: flex;
+  font-family: var(--font-game-body);
+  font-size: var(--text-game-body-sm);
+  gap: 0.65rem;
+  line-height: 1.45;
+  margin: 0;
+  padding-block: 0.75rem;
+}
+
+.velkhar-travel-journal__state[data-state='secured'] {
+  color: var(--material-gold-bright);
+}
+
+.velkhar-travel-journal__details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.velkhar-travel-journal__details > div {
+  border-left: 1px solid color-mix(in srgb, var(--salt-white) 14%, transparent);
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.25rem 1rem;
+}
+
+.velkhar-travel-journal__details > div:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.velkhar-travel-journal__details dt {
+  font-family: var(--font-game-ui);
+  font-size: var(--text-game-caption);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.velkhar-travel-journal__details dd {
+  color: var(--salt-white);
+  font-family: var(--font-game-heading);
+  font-size: var(--text-game-lead);
+  line-height: 1.3;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.velkhar-travel-journal__marks {
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--font-game-ui);
+  font-size: var(--text-game-caption);
+  gap: 0.5rem 1.35rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.velkhar-travel-journal__trace {
+  border-top: 1px solid color-mix(in srgb, var(--material-gold) 34%, transparent);
+  padding-top: 1.1rem;
+}
+
+.velkhar-travel-journal__trace blockquote {
+  color: color-mix(in srgb, var(--salt-white) 90%, var(--material-gold));
+  font-family: var(--font-game-body);
+  font-size: var(--text-game-quote);
+  font-style: italic;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 62ch;
+  text-wrap: pretty;
 }
 
 .velkhar-conditions ul {
@@ -998,39 +868,63 @@
 
 .velkhar-inventory {
   display: grid;
-  gap: 1.35rem;
+  gap: 1rem;
 }
 
 .velkhar-inventory__workspace {
   align-items: start;
   display: grid;
-  gap: 1.25rem;
-  grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.42fr);
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.34fr);
 }
 
 .velkhar-inventory__categories {
   display: grid;
-  gap: 1.35rem;
+  gap: 1.5rem;
+  grid-template-columns: minmax(13rem, 0.72fr) minmax(19rem, 1.28fr);
   min-width: 0;
 }
 
 .velkhar-inventory__summary {
+  align-items: center;
   display: flex;
-  gap: 0.6rem;
+  gap: 1.25rem;
+  min-height: 2.75rem;
 }
 
 .velkhar-inventory__summary > span {
   align-items: center;
   background: transparent;
-  border-bottom: 1px solid color-mix(in srgb, var(--salt-white) 18%, transparent);
   box-shadow: none;
   color: var(--salt-muted);
   display: flex;
   font-family: var(--font-game-ui);
   font-size: var(--text-game-label);
-  gap: 0.4rem;
-  min-height: 44px;
-  padding: 0.45rem 0.7rem;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  position: relative;
+}
+
+.velkhar-inventory__summary > span + span {
+  padding-left: 1.25rem;
+}
+
+.velkhar-inventory__summary > span + span::before {
+  background: var(--auth-rule);
+  content: '';
+  height: 1.5rem;
+  left: 0;
+  opacity: 0.7;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+}
+
+.velkhar-inventory__summary > span > span {
+  color: var(--control-text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .velkhar-inventory__summary strong {
@@ -1040,43 +934,99 @@
 
 .velkhar-inventory__grid {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.8rem 0.65rem;
 }
 
 .velkhar-inventory__grid--equipment {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .velkhar-inventory__grid--bag {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.velkhar-inventory__section {
+  border-top: 1px solid var(--auth-rule);
+  min-width: 0;
+  padding-top: 1rem;
+}
+
+.velkhar-inventory__section--equipment .velkhar-session-window__section-heading {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.velkhar-inventory__section--equipment .velkhar-session-window__section-heading h3 {
+  white-space: nowrap;
+}
+
+.velkhar-inventory__section--equipment .velkhar-session-window__section-heading span {
+  line-height: 1.35;
 }
 
 .velkhar-inventory-slot {
   align-items: center;
   display: grid;
-  gap: 0.25rem;
+  gap: 0.45rem;
   justify-items: center;
   min-width: 0;
   position: relative;
 }
 
 .velkhar-inventory-slot .inventory-slot {
-  min-height: 56px;
-  min-width: 56px;
-  width: 56px;
+  background: color-mix(in srgb, var(--ink-raised) 72%, transparent);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 0.4rem 1rem color-mix(in srgb, var(--ink-black) 32%, transparent);
+  min-height: 4.25rem;
+  min-width: 4.25rem;
+  transition:
+    box-shadow var(--motion-fast) var(--ease-velkhar-standard),
+    filter var(--motion-fast) var(--ease-velkhar-standard),
+    transform 180ms cubic-bezier(0.2, 0, 0, 1);
+  width: 4.25rem;
+}
+
+.velkhar-inventory-slot .inventory-slot:hover:not(:disabled),
+.velkhar-inventory-slot .inventory-slot--selected {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--material-gold-bright) 72%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--material-gold) 18%, transparent),
+    0 0.55rem 1.25rem color-mix(in srgb, var(--ink-black) 45%, transparent);
+  filter: none;
+}
+
+.velkhar-inventory-slot .inventory-slot:disabled {
+  filter: none;
+  opacity: 0.72;
+}
+
+.velkhar-inventory-slot--empty .inventory-slot__content:empty::before {
+  background: color-mix(in srgb, var(--material-gold) 32%, transparent);
+  content: '';
+  height: 1px;
+  width: 0.75rem;
 }
 
 .velkhar-inventory-slot > span {
   color: var(--salt-muted);
   font-family: var(--font-game-ui);
   font-size: var(--text-game-micro);
-  max-width: 100%;
+  max-width: 6.75rem;
   line-height: 1.25;
   min-height: 2.5em;
   overflow: visible;
   text-align: center;
   text-wrap: balance;
   white-space: normal;
+}
+
+.velkhar-inventory__grid--bag .velkhar-inventory-slot--empty > span {
+  color: color-mix(in srgb, var(--material-gold) 64%, var(--salt-muted));
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.12em;
 }
 
 .velkhar-inventory-slot--equipped::after,
@@ -1107,21 +1057,26 @@
 .velkhar-inventory__specials {
   display: grid;
   gap: 0.75rem;
+  grid-column: 1 / -1;
   grid-template-columns: 1fr 1fr;
 }
 
 .velkhar-inventory__specials section {
   align-items: center;
-  background: transparent;
-  border-top: 1px solid color-mix(in srgb, var(--fresh-blood) 34%, transparent);
-  box-shadow: none;
+  background: color-mix(in srgb, var(--ink-raised) 42%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--material-gold) 34%, transparent);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.035);
   display: flex;
   justify-content: space-between;
-  padding: 0.7rem;
+  padding: 0.85rem 1rem;
 }
 
 .velkhar-inventory__specials section > div:first-child {
   min-width: 0;
+}
+
+.velkhar-inventory__specials .velkhar-inventory-slot--empty > span {
+  display: none;
 }
 
 .velkhar-inventory__specials p {
@@ -1150,13 +1105,28 @@
 }
 
 .velkhar-inventory__detail {
-  background: color-mix(in srgb, var(--dried-blood) 9%, transparent);
-  border-left: 3px solid color-mix(in srgb, var(--fresh-blood) 58%, transparent);
-  box-shadow: none;
-  min-height: 8.5rem;
-  padding: 1rem;
+  background: color-mix(in srgb, var(--ink-raised) 72%, transparent);
+  border: 0;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  min-height: 18rem;
+  padding: 1.35rem;
   position: sticky;
   top: 0;
+}
+
+.velkhar-inventory__detail .velkhar-session-window__empty {
+  align-content: center;
+  min-height: calc(18rem - 2.7rem);
+}
+
+.velkhar-inventory__detail .velkhar-session-window__empty .game-icon {
+  opacity: 0.72;
+}
+
+.velkhar-inventory__detail .velkhar-session-window__eyebrow {
+  font-size: var(--text-game-caption);
 }
 
 .velkhar-inventory__detail h3 {
@@ -1243,50 +1213,7 @@
   }
 
   .velkhar-session__gm-status {
-    font-size: var(--text-game-caption);
-  }
-
-  .velkhar-session__main {
-    padding-inline: 1rem;
-  }
-
-  .velkhar-survival-hud {
-    grid-template-columns: minmax(0, 1fr) 13.75rem;
-  }
-
-  .velkhar-survival-hud__stat {
-    gap: 0.25rem;
-    grid-template-columns: 2.35rem minmax(0, 1fr);
-    padding-inline: 0.35rem;
-  }
-
-  .velkhar-survival-hud__stat-icon {
-    height: 3.8rem;
-    width: 2.35rem;
-  }
-
-  .velkhar-survival-hud__stat-copy {
-    gap: 0.3rem;
-  }
-
-  .velkhar-survival-hud__stat-heading {
-    font-size: clamp(0.78rem, 1vw, 0.9rem);
-    gap: 0.25rem;
-  }
-
-  .velkhar-survival-hud__stat-track {
-    height: 0.65rem;
-  }
-
-  .velkhar-survival-hud__tools {
-    gap: 0.4rem;
-    padding-left: 0.5rem;
-    width: 13.75rem;
-  }
-
-  .velkhar-survival-hud__tools button {
-    height: 3.7rem;
-    width: 3.7rem;
+    display: none;
   }
 }
 
@@ -1313,20 +1240,6 @@
     display: none;
   }
 
-  .velkhar-survival-hud {
-    height: auto;
-    padding-block: 1rem;
-  }
-
-  .velkhar-survival-hud__stats {
-    grid-template-columns: repeat(2, minmax(9rem, 1fr));
-  }
-
-  .velkhar-survival-hud__stat {
-    border-bottom: 1px solid color-mix(in srgb, var(--material-gold) 22%, transparent);
-    min-height: 4rem;
-  }
-
   .velkhar-inventory__workspace {
     grid-template-columns: 1fr;
   }
@@ -1348,10 +1261,6 @@
     padding-inline: 0.85rem;
   }
 
-  .velkhar-session__main {
-    padding: 1.35rem 0.8rem 2rem;
-  }
-
   .velkhar-session__topbar .game-top-bar__end {
     justify-content: flex-start;
   }
@@ -1361,96 +1270,11 @@
     gap: 0.45rem;
   }
 
-  .velkhar-session__nav-group:not(.velkhar-session__nav-group--tools) > span:last-child {
+  .velkhar-session__gm-status {
     display: none;
   }
 
-  .velkhar-survival-hud {
-    grid-template-columns: 1fr;
-    padding-block: 0.65rem 0.75rem;
-  }
-
-  .velkhar-survival-hud__stats {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-
-  .velkhar-survival-hud__stat {
-    border-bottom: 0;
-    gap: 0.1rem;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    min-height: 4.75rem;
-    padding: 0.15rem 0.2rem 0.35rem;
-  }
-
-  .velkhar-survival-hud__stat-icon {
-    height: 2.45rem;
-    width: 2.65rem;
-  }
-
-  .velkhar-survival-hud__stat-copy {
-    gap: 0.18rem;
-    justify-items: center;
-    width: 100%;
-  }
-
-  .velkhar-survival-hud__stat-heading {
-    align-items: center;
-    flex-direction: column;
-    font-size: var(--text-game-micro);
-    gap: 0.12rem;
-    line-height: 1;
-  }
-
-  .velkhar-survival-hud__stat-heading span {
-    font-size: var(--text-game-caption);
-  }
-
-  .velkhar-survival-hud__stat-track {
-    height: 0.45rem;
-    width: 82%;
-  }
-
-  .velkhar-survival-hud__tools {
-    justify-content: center;
-    padding: 0.65rem 0 0;
-    width: 100%;
-  }
-
-  .velkhar-survival-hud__tools button {
-    height: 3.35rem;
-    width: 3.35rem;
-  }
-
-  .game-session-choice {
-    min-height: 4.6rem;
-    padding-left: 5.25rem;
-    padding-right: 3.25rem;
-  }
-
-  .game-session-choice::before {
-    left: 3.35rem;
-  }
-
-  .game-session-choice .dialogue-choice__number {
-    left: 0.1rem;
-  }
-
-  .velkhar-session__topbar .location-identity {
-    max-width: calc(100vw - 1.7rem);
-  }
-
-  .game-session-narrative .narrative-passage {
-    font-size: clamp(1.16rem, 4.8vw, 1.34rem);
-    line-height: 1.46;
-    text-align: left;
-  }
-
-  .game-session-choice {
-    font-size: var(--text-game-body-sm);
-  }
-
-  .game-session-risk {
+  .velkhar-session__nav-group:not(.velkhar-session__nav-group--tools) > span:last-child {
     display: none;
   }
 
@@ -1460,6 +1284,7 @@
 
   .velkhar-session-window .game-window {
     inset: 0;
+    transform: none;
     max-height: none;
     max-width: none;
     position: fixed;
@@ -1474,12 +1299,35 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .velkhar-travel-journal__details {
+    grid-template-columns: 1fr;
+  }
+
+  .velkhar-travel-journal__details > div {
+    border-bottom: 1px solid color-mix(in srgb, var(--salt-white) 14%, transparent);
+    border-left: 0;
+    padding: 0.65rem 0;
+  }
+
+  .velkhar-travel-journal__heading,
+  .velkhar-travel-journal__empty {
+    align-items: flex-start;
+  }
+
   .velkhar-session-window__attributes {
     grid-template-columns: 1fr;
   }
 
   .velkhar-inventory__workspace {
     grid-template-columns: 1fr;
+  }
+
+  .velkhar-inventory__categories {
+    grid-template-columns: 1fr;
+  }
+
+  .velkhar-inventory__summary {
+    flex-wrap: wrap;
   }
 
   .velkhar-inventory__detail {

@@ -121,53 +121,6 @@
   gap: 20px 30px;
   margin-top: 28px;
 }
-.game-scene__location {
-  font-family: var(--font-display);
-  font-size: 28px;
-  text-align: center;
-  text-transform: uppercase;
-}
-.game-scene__location small {
-  display: block;
-  font-family: var(--font-ui);
-  font-size: 14px;
-  text-transform: none;
-  letter-spacing: 0.04em;
-  color: var(--salt-paper-dim);
-}
-.game-scene__reader {
-  padding: 20px 24px;
-}
-.game-scene__reader h3 {
-  font-family: var(--font-display);
-  font-size: 34px;
-  font-weight: 400;
-  text-transform: uppercase;
-  color: var(--salt-gold);
-  margin: 0 0 10px;
-}
-.game-scene__reader > p {
-  font-size: clamp(22px, 1.65vw, 26px);
-  line-height: 1.22;
-  margin: 0 0 20px;
-}
-.game-scene__choices {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-.game-scene__response p {
-  font-size: 19px;
-  line-height: 1.35;
-}
-.game-scene__response:empty {
-  display: none;
-}
-/* The thirst gauge reads as salt, not ember — a landing-only tint. */
-.salt-hud__thirst {
-  --stat-bar-color: var(--salt-paper);
-  --stat-bar-light: var(--salt-paper);
-}
 .salt-footer {
   border-top: 1px solid var(--salt-gold);
   padding: 22px 3.4vw;
@@ -245,18 +198,6 @@
   .salt-plan::before {
     display: none;
   }
-  .game-scene__location {
-    font-size: 20px;
-  }
-  .game-scene__location small {
-    font-size: 12px;
-  }
-  .game-scene__reader {
-    padding: 18px 12px;
-  }
-  .game-scene__reader > p {
-    font-size: 22px;
-  }
   .salt-footer {
     flex-wrap: wrap;
     padding: 18px 22px;
@@ -302,30 +243,6 @@
     height: 100svh;
     max-height: 100svh;
     min-height: 100svh;
-  }
-  .game-scene__location {
-    font-size: 25px;
-  }
-  /* The reader is the one part whose text can outgrow the frame — a long
-       passage or a fourth choice. It scrolls inside the panel instead of
-       stretching the section, so the plate and the HUD keep their place. */
-  .game-scene__reader {
-    min-height: 0;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--salt-gold) 55%, transparent) transparent;
-  }
-  .game-scene__reader > p {
-    font-size: clamp(20px, 1.45vw, 22px);
-    line-height: 1.24;
-    margin-bottom: 14px;
-  }
-  .game-scene__reader {
-    padding: 18px 22px;
-  }
-  .game-scene__choices {
-    gap: 6px;
-    margin-bottom: 12px;
   }
 }
 @media (max-width: 767px) {
@@ -402,9 +319,6 @@ html.lenis body {
   .salt-landing--motion .main-navigation--marketing.game-top-bar {
     animation: none;
   }
-  .game-scene__response {
-    animation: salt-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  }
 }
 @keyframes salt-hero-fallback {
   to {
@@ -419,15 +333,5 @@ html.lenis body {
   }
   50% {
     transform: translateY(6px);
-  }
-}
-@keyframes salt-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
   }
 }

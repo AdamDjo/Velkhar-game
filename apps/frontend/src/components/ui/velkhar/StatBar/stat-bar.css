@@ -23,6 +23,16 @@
   --stat-bar-light: color-mix(in srgb, var(--cendre) 72%, var(--parchment));
 }
 
+.stat-bar--salt {
+  --stat-bar-color: var(--thirst-salt);
+  --stat-bar-light: var(--thirst-salt);
+}
+
+.stat-bar--calamine {
+  --stat-bar-color: var(--calamine);
+  --stat-bar-light: color-mix(in srgb, var(--calamine) 72%, var(--parchment));
+}
+
 .stat-bar--sm {
   --stat-bar-height: 8px;
 }

@@ -133,6 +133,48 @@ const OPENING_RESPONSE: SceneResponse = {
   ],
   survival: MOCK_CHARACTER.stats.survival,
   notifications: [],
+  run: {
+    contract: {
+      id: 'contract-well',
+      family: 'recovery',
+      destination: 'Well of Glass',
+      commissioner: 'The Blind One',
+      danger: 'medium',
+      duration: 'short',
+      targetDurationMinutes: 45,
+      rewardGold: 80,
+      objective: 'Bring back the sealed water ledger',
+      successCondition: 'water-ledger-secured',
+      failureConditions: ['ledger-destroyed'],
+    },
+    intensityTag: 'brief',
+    mode: 'exploration',
+    currentDepth: 1,
+    maxDepthReached: 1,
+    returnEngaged: false,
+    objectiveSecured: false,
+    returnEstimate: {
+      remainingRooms: 1,
+      estimatedMinutes: 8,
+      waterNeeded: 1,
+      foodNeeded: 0,
+      risk: 'safe',
+      suppliesShort: false,
+    },
+    powerGapProjection: {
+      powerScore: 5,
+      contractWeight: 6,
+      gap: -1,
+      registry: 'hard',
+      deathIntensity: 'brutal',
+      deathTurn: 4,
+      killTurn: 3,
+      rewardMultiplier: 1,
+    },
+    estimatedRemainingMinutes: 37,
+    canDescend: true,
+    atSurface: false,
+  },
   source: 'ai',
 }
 
@@ -189,6 +231,9 @@ describe('VelkharSession', () => {
     expect(screen.getByRole('progressbar', { name: 'Thirst' })).toBeInTheDocument()
     expect(screen.getByRole('progressbar', { name: 'Calamine' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Open inventory, 6 items' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Open the travel journal' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Open character sheet' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Open session menu' })).not.toBeInTheDocument()
     expect(screen.getByText('GM connected')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Sign in' })).toHaveAttribute(
       'href',
@@ -215,13 +260,17 @@ describe('VelkharSession', () => {
     render(<VelkharSession initialCharacter={MOCK_CHARACTER} />)
 
     expect(await screen.findByText('Salt moves across the road.')).toBeInTheDocument()
-    expect(screen.getByRole('progressbar', { name: 'Blood' })).toHaveStyle('--hud-stat-value: 50%')
-    expect(screen.getByRole('progressbar', { name: 'Breath' })).toHaveStyle('--hud-stat-value: 42%')
-    expect(screen.getByRole('progressbar', { name: 'Hunger' })).toHaveStyle('--hud-stat-value: 64%')
-    expect(screen.getByRole('progressbar', { name: 'Thirst' })).toHaveStyle('--hud-stat-value: 18%')
-    expect(screen.getByRole('progressbar', { name: 'Calamine' })).toHaveStyle(
-      '--hud-stat-value: 27%'
-    )
+    const readFill = (label: string) => {
+      const fill = screen.getByRole('progressbar', { name: label }).querySelector('.stat-bar__fill')
+      if (!(fill instanceof HTMLElement)) throw new Error(`Missing fill for ${label}`)
+      return fill.style.getPropertyValue('--stat-bar-fill')
+    }
+
+    expect(readFill('Blood')).toBe('0.5')
+    expect(readFill('Breath')).toBe('0.42')
+    expect(readFill('Hunger')).toBe('0.64')
+    expect(readFill('Thirst')).toBe('0.18')
+    expect(readFill('Calamine')).toBe('0.27')
   })
 
   it('envoie un choix une seule fois et affiche la scène suivante', async () => {
@@ -266,6 +315,19 @@ describe('VelkharSession', () => {
     render(<VelkharSession initialCharacter={MOCK_CHARACTER} />)
 
     await screen.findByText('Salt moves across the road.')
+    await user.click(screen.getByRole('button', { name: 'Open the travel journal' }))
+
+    expect(screen.getByRole('dialog', { name: 'Journey journal' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Bring back the sealed water ledger' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Well of Glass')).toBeInTheDocument()
+    expect(
+      screen.getByText('The contract remains open. The road awaits your choice.')
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/remaining rooms/i)).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Close panel' }))
     await user.click(screen.getByRole('button', { name: 'Open character sheet' }))
 
     expect(screen.getByRole('dialog', { name: 'Character panel' })).toBeInTheDocument()
@@ -319,7 +381,7 @@ describe('VelkharSession', () => {
     render(<VelkharSession initialCharacter={MOCK_CHARACTER} />)
 
     await screen.findByText('Salt moves across the road.')
-    await user.click(screen.getByRole('button', { name: 'Open session menu' }))
+    await user.click(screen.getByRole('button', { name: 'Options' }))
     expect(screen.getByRole('button', { name: 'Close panel' })).toHaveFocus()
 
     await user.tab({ shift: true })
@@ -333,7 +395,7 @@ describe('VelkharSession', () => {
     render(<VelkharSession initialCharacter={MOCK_CHARACTER} />)
 
     await screen.findByText('Salt moves across the road.')
-    await user.click(screen.getByRole('button', { name: 'Open session menu' }))
+    await user.click(screen.getByRole('button', { name: 'Options' }))
     await user.click(screen.getByRole('button', { name: 'Abandon this run' }))
 
     expect(screen.getByRole('alertdialog', { name: 'Confirm abandon run' })).toBeInTheDocument()

@@ -26,14 +26,24 @@ function itemIcon(item: InventoryItemRef): GameIconName {
 }
 
 interface ItemSlotProps {
+  displayLabel?: string
   fallbackIcon: GameIconName
   item: InventoryItemRef | null
   label: string
   onSelect: (item: InventoryItemRef) => void
   selectedId: string | null
+  showEmptyIcon?: boolean
 }
 
-function ItemSlot({ fallbackIcon, item, label, onSelect, selectedId }: ItemSlotProps) {
+function ItemSlot({
+  displayLabel,
+  fallbackIcon,
+  item,
+  label,
+  onSelect,
+  selectedId,
+  showEmptyIcon = true,
+}: ItemSlotProps) {
   const t = useTranslations('Session')
   const unavailable = !item || item.state === 'locked' || item.state === 'pending'
   const stateLabel =
@@ -44,6 +54,7 @@ function ItemSlot({ fallbackIcon, item, label, onSelect, selectedId }: ItemSlotP
     <div
       className={cn(
         'velkhar-inventory-slot',
+        !item && 'velkhar-inventory-slot--empty',
         item?.equippedSlot && 'velkhar-inventory-slot--equipped',
         item?.state === 'locked' && 'velkhar-inventory-slot--locked',
         item?.state === 'pending' && 'velkhar-inventory-slot--pending'
@@ -51,7 +62,11 @@ function ItemSlot({ fallbackIcon, item, label, onSelect, selectedId }: ItemSlotP
     >
       <InventorySlot
         disabled={unavailable}
-        icon={<GameIcon decorative name={item ? itemIcon(item) : fallbackIcon} size={48} />}
+        icon={
+          item || showEmptyIcon ? (
+            <GameIcon decorative name={item ? itemIcon(item) : fallbackIcon} size={48} />
+          ) : undefined
+        }
         label={
           item ? `${label}: ${item.name}${equippedLabel}${stateLabel}` : t('itemEmpty', { label })
         }
@@ -59,7 +74,7 @@ function ItemSlot({ fallbackIcon, item, label, onSelect, selectedId }: ItemSlotP
         selected={item?.id === selectedId}
         onClick={() => item && onSelect(item)}
       />
-      <span aria-hidden="true">{item?.name ?? label}</span>
+      <span aria-hidden="true">{item?.name ?? displayLabel ?? label}</span>
     </div>
   )
 }
@@ -94,10 +109,13 @@ export function VelkharInventoryPanel({ gold, items, onAction }: VelkharInventor
     <div className="velkhar-inventory">
       <div className="velkhar-inventory__summary" aria-label={t('inventorySummary')}>
         <span>
-          <GameIcon decorative name="coin" size={24} /> {t('gold')} <strong>{gold ?? '—'}</strong>
+          <GameIcon decorative name="coin" size={24} />
+          <span>{t('gold')}</span>
+          <strong>{gold ?? '—'}</strong>
         </span>
         <span>
-          <GameIcon decorative name="chest" size={24} /> {t('bag')}{' '}
+          <GameIcon decorative name="chest" size={24} />
+          <span>{t('bag')}</span>
           <strong>
             {inventory.bagItems.length}/{VELKHAR_BAG_CAPACITY}
           </strong>
@@ -106,7 +124,10 @@ export function VelkharInventoryPanel({ gold, items, onAction }: VelkharInventor
 
       <div className="velkhar-inventory__workspace">
         <div className="velkhar-inventory__categories">
-          <section aria-labelledby="velkhar-equipment-title">
+          <section
+            className="velkhar-inventory__section velkhar-inventory__section--equipment"
+            aria-labelledby="velkhar-equipment-title"
+          >
             <div className="velkhar-session-window__section-heading">
               <h3 id="velkhar-equipment-title">{t('wornEquipment')}</h3>
               <span>{t('fixedSlots')}</span>
@@ -125,7 +146,10 @@ export function VelkharInventoryPanel({ gold, items, onAction }: VelkharInventor
             </div>
           </section>
 
-          <section aria-labelledby="velkhar-bag-title">
+          <section
+            className="velkhar-inventory__section velkhar-inventory__section--bag"
+            aria-labelledby="velkhar-bag-title"
+          >
             <div className="velkhar-session-window__section-heading">
               <h3 id="velkhar-bag-title">{t('bag')}</h3>
               <span>{t('bagSlots')}</span>
@@ -134,10 +158,12 @@ export function VelkharInventoryPanel({ gold, items, onAction }: VelkharInventor
               {bagSlots.map((item, index) => (
                 <ItemSlot
                   key={item?.id ?? `bag-slot-${index}`}
+                  displayLabel={String(index + 1).padStart(2, '0')}
                   fallbackIcon="chest"
                   item={item}
                   label={t('bagSlot', { number: index + 1 })}
                   selectedId={selectedId}
+                  showEmptyIcon={false}
                   onSelect={(nextItem) => setSelectedId(nextItem.id)}
                 />
               ))}
@@ -215,7 +241,8 @@ export function VelkharInventoryPanel({ gold, items, onAction }: VelkharInventor
             </>
           ) : (
             <div className="velkhar-session-window__empty">
-              <GameIcon decorative name="eye" size={48} />
+              <p className="velkhar-session-window__eyebrow">{t('itemDetail')}</p>
+              <GameIcon decorative name="eye" size={32} />
               <p>{t('selectItem')}</p>
             </div>
           )}
