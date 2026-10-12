@@ -104,7 +104,14 @@ function expectAuthFrame(selector: string) {
 function expectUnifiedWindow(selector: string) {
   expectAuthFrame(`${selector} .game-window`)
   cy.get(`${selector} .game-window__header`).then(($header) => {
-    expect(getComputedStyle($header[0], '::after').display).to.equal('none')
+    const separatorStyle = getComputedStyle($header[0], '::after')
+    expect(separatorStyle.display).to.equal('block')
+    expect(Number.parseFloat(separatorStyle.height)).to.equal(1)
+  })
+  cy.get(`${selector} .game-window__header button`).then(($button) => {
+    const bounds = $button[0].getBoundingClientRect()
+    expect(bounds.width).to.be.at.least(44)
+    expect(bounds.height).to.be.at.least(44)
   })
 }
 
@@ -129,6 +136,9 @@ describe('Game Session Encre de Sel', () => {
       cy.get('.game-session-hud__tools .inventory-slot').eq(0).click()
       cy.get('.velkhar-session-window--inventory [role="dialog"]').should('be.visible')
       expectUnifiedWindow('.velkhar-session-window--inventory')
+      cy.get('.velkhar-inventory__detail--empty').then(($detail) => {
+        expect($detail[0].getBoundingClientRect().height).to.be.lessThan(160)
+      })
       cy.get('.velkhar-session-window--inventory .game-window__header button').click()
 
       cy.get('.game-session-hud__tools .inventory-slot').eq(1).click()
@@ -140,11 +150,33 @@ describe('Game Session Encre de Sel', () => {
       cy.get('.game-session-hud__tools .inventory-slot').eq(2).click()
       cy.get('.velkhar-session-window--character [role="dialog"]').should('be.visible')
       expectUnifiedWindow('.velkhar-session-window--character')
+      cy.get('.velkhar-session-window--character .game-window__header h2').should(
+        'have.text',
+        'Character sheet'
+      )
+      cy.get('.velkhar-session-window--character h3')
+        .contains('Yarel of the Salt Roads')
+        .should('have.length', 1)
       cy.get('.velkhar-session-window--character .game-window__header button').click()
 
       cy.contains('.velkhar-session__nav-group--tools button', 'Options').click()
       cy.get('.velkhar-session-window--menu [role="dialog"]').should('be.visible')
       expectUnifiedWindow('.velkhar-session-window--menu')
+      cy.get('.velkhar-session-window--menu').within(() => {
+        cy.contains('h3', 'Preferences').should('be.visible')
+        cy.contains('h3', 'Leave the session').should('be.visible')
+        cy.contains('h3', 'End the road').scrollIntoView().should('be.visible')
+        cy.contains('Resume the journey').should('not.exist')
+        cy.contains('Settings — coming soon').should('not.exist')
+      })
+      if (viewport.name === 'mobile') {
+        cy.get('.velkhar-session-window--menu [role="dialog"]').then(($dialog) => {
+          const bounds = $dialog[0].getBoundingClientRect()
+          expect(bounds.top).to.be.lessThan(8)
+          expect(bounds.left).to.be.lessThan(8)
+          expect(bounds.right).to.be.greaterThan(viewport.width - 8)
+        })
+      }
       cy.document().then((document) => {
         expect(document.documentElement.scrollWidth).to.be.at.most(viewport.width)
       })

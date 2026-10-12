@@ -13,10 +13,9 @@ import { VELKHAR_WORLD } from '../../_config/velkhar-world'
 interface VelkharSessionMenuProps {
   ending: boolean
   onAbandon: () => Promise<void>
-  onResume: () => void
 }
 
-export function VelkharSessionMenu({ ending, onAbandon, onResume }: VelkharSessionMenuProps) {
+export function VelkharSessionMenu({ ending, onAbandon }: VelkharSessionMenuProps) {
   const t = useTranslations('Session')
   const [confirmingAbandon, setConfirmingAbandon] = useState(false)
 
@@ -44,35 +43,64 @@ export function VelkharSessionMenu({ ending, onAbandon, onResume }: VelkharSessi
 
   return (
     <div className="velkhar-session-menu">
-      <LanguageSwitcher variant="menu" />
+      <div className="velkhar-session-menu__intro">
+        <GameIcon decorative name="compass" size={48} />
+        <p>{t('menuIntro')}</p>
+      </div>
 
-      <GameButton
-        leadingIcon={<GameIcon decorative name="arrow" size={24} />}
-        onClick={onResume}
-        variant="secondary"
+      <section
+        className="velkhar-session-menu__section velkhar-session-menu__section--preferences"
+        aria-labelledby="session-preferences-title"
       >
-        {t('resumeJourney')}
-      </GameButton>
+        <div className="velkhar-session-menu__heading">
+          <GameIcon decorative name="quill" size={32} />
+          <div>
+            <h3 id="session-preferences-title">{t('menuPreferences')}</h3>
+            <p>{t('menuPreferencesHint')}</p>
+          </div>
+        </div>
+        <LanguageSwitcher variant="menu" />
+      </section>
 
-      <GameButton
-        disabled
-        leadingIcon={<GameIcon decorative name="crafting" size={24} />}
-        variant="ghost"
-      >
-        {t('settingsSoon')}
-      </GameButton>
+      <div className="velkhar-session-menu__routes">
+        <section className="velkhar-session-menu__section" aria-labelledby="session-exit-title">
+          <div className="velkhar-session-menu__heading">
+            <GameIcon decorative name="hourglass" size={32} />
+            <div>
+              <h3 id="session-exit-title">{t('menuExit')}</h3>
+              <p>{t('menuExitHint')}</p>
+            </div>
+          </div>
+          <GameLink
+            href={`${VELKHAR_WORLD.routes.aveugle}?return=run`}
+            leadingIcon={<GameIcon decorative name="arrow" size={24} />}
+            variant="secondary"
+          >
+            {t('returnBlindOne')}
+          </GameLink>
+        </section>
 
-      <GameLink
-        href={`${VELKHAR_WORLD.routes.aveugle}?return=run`}
-        leadingIcon={<GameIcon decorative name="hourglass" size={24} />}
-        variant="secondary"
-      >
-        {t('returnBlindOne')}
-      </GameLink>
-
-      <GameButton onClick={() => setConfirmingAbandon(true)} tone="danger" variant="secondary">
-        {t('abandonRun')}
-      </GameButton>
+        <section
+          className="velkhar-session-menu__section velkhar-session-menu__section--danger"
+          aria-labelledby="session-abandon-title"
+        >
+          <div className="velkhar-session-menu__heading">
+            <GameIcon decorative name="warning" size={32} />
+            <div>
+              <h3 id="session-abandon-title">{t('menuAbandon')}</h3>
+              <p>{t('menuAbandonHint')}</p>
+            </div>
+          </div>
+          <GameButton
+            leadingIcon={<GameIcon decorative name="fire" size={24} />}
+            onClick={() => setConfirmingAbandon(true)}
+            tone="danger"
+            variant="secondary"
+          >
+            {t('abandonRun')}
+          </GameButton>
+        </section>
+      </div>
     </div>
   )
 }

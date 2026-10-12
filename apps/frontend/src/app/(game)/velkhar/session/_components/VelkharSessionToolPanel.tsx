@@ -71,7 +71,7 @@ export function VelkharSessionToolPanel({
         openTool === 'inventory'
           ? t('fieldKit')
           : openTool === 'character'
-            ? character.name
+            ? t('characterSheet')
             : openTool === 'journal'
               ? t('travelJournal')
               : t('sessionMenu')
@@ -89,9 +89,7 @@ export function VelkharSessionToolPanel({
         <VelkharTravelJournal location={location} narrative={narrative} run={run} />
       ) : null}
 
-      {openTool === 'menu' ? (
-        <VelkharSessionMenu ending={ending} onAbandon={onAbandon} onResume={onClose} />
-      ) : null}
+      {openTool === 'menu' ? <VelkharSessionMenu ending={ending} onAbandon={onAbandon} /> : null}
     </GameWindow>
   )
 }

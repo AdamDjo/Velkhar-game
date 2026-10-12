@@ -102,15 +102,21 @@
 
 .game-window__header .game-button {
   font-family: var(--font-game-display);
-  font-size: 1.85rem;
+  font-size: var(--text-game-section);
   min-height: 2.75rem;
   min-width: 2.75rem;
+  opacity: 0.76;
   width: 2.75rem;
 }
 
 .game-window__header .game-button--icon {
   --game-button-text: var(--salt-white);
   --game-button-text-hover: var(--material-gold-bright);
+}
+
+.game-window__header .game-button:hover,
+.game-window__header .game-button:focus-visible {
+  opacity: 1;
 }
 
 @media (max-width: 640px) {
@@ -133,5 +139,12 @@
 
   .game-window__header h2 {
     font-size: clamp(1.55rem, 6.3vw, 1.9rem);
+  }
+
+  .game-window__header .game-button {
+    font-size: var(--text-game-section);
+    min-height: 3rem;
+    min-width: 3rem;
+    width: 3rem;
   }
 }
