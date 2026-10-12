@@ -51,9 +51,6 @@
   .salt-demo .game-scene-layout__scene {
     height: 300px;
   }
-  .salt-demo .dialogue-choice {
-    font-size: 18px;
-  }
 }
 @media (min-width: 1121px) and (min-height: 700px) {
   /* The intro used to be a full block that the demo was then pulled back over
@@ -120,15 +117,4 @@
     min-height: 0;
     height: 100%;
   }
-  .salt-demo .dialogue-choice {
-    padding-block: 10px;
-  }
-}
-.salt-demo .narrative-composer__control {
-  font-size: 19px;
-}
-.salt-demo .narrative-composer__action {
-  width: 50px;
-  min-width: 50px;
-  height: 50px;
 }

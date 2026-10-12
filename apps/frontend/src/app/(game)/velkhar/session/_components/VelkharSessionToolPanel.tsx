@@ -6,10 +6,17 @@ import { cn } from '@/lib/utils'
 import { VelkharCharacterSheet } from './VelkharCharacterSheet'
 import { VelkharInventoryPanel } from './VelkharInventoryPanel'
 import { VelkharSessionMenu } from './VelkharSessionMenu'
+import { VelkharTravelJournal } from './VelkharTravelJournal'
 
-import type { ActiveCondition, Character, InventoryItemRef, SurvivalStats } from '@velkhar/shared'
+import type {
+  ActiveCondition,
+  Character,
+  InventoryItemRef,
+  RunSnapshot,
+  SurvivalStats,
+} from '@velkhar/shared'
 
-export type VelkharSessionTool = 'character' | 'inventory' | 'menu'
+export type VelkharSessionTool = 'character' | 'inventory' | 'journal' | 'menu'
 
 interface VelkharSessionToolPanelProps {
   character: Character
@@ -17,10 +24,13 @@ interface VelkharSessionToolPanelProps {
   ending: boolean
   gold: number | null
   inventory: InventoryItemRef[]
+  location: string
+  narrative: string
   openTool: VelkharSessionTool | null
   onAbandon: () => Promise<void>
   onClose: () => void
   onInventoryAction: (item: InventoryItemRef, action: 'use' | 'equip' | 'unequip') => void
+  run?: RunSnapshot | null
   survival: SurvivalStats
 }
 
@@ -30,10 +40,13 @@ export function VelkharSessionToolPanel({
   ending,
   gold,
   inventory,
+  location,
+  narrative,
   onAbandon,
   onClose,
   onInventoryAction,
   openTool,
+  run,
   survival,
 }: VelkharSessionToolPanelProps) {
   const t = useTranslations('Session')
@@ -41,10 +54,7 @@ export function VelkharSessionToolPanel({
 
   return (
     <GameWindow
-      className={cn(
-        'velkhar-session-window',
-        openTool === 'inventory' && 'velkhar-session-window--inventory'
-      )}
+      className={cn('velkhar-session-window', `velkhar-session-window--${openTool}`)}
       closeLabel={t('closePanel')}
       dismissLabel={t('closePanel')}
       label={
@@ -52,7 +62,9 @@ export function VelkharSessionToolPanel({
           ? t('inventoryPanel')
           : openTool === 'character'
             ? t('characterPanel')
-            : t('sessionMenu')
+            : openTool === 'journal'
+              ? t('journalPanel')
+              : t('sessionMenu')
       }
       onClose={onClose}
       title={
@@ -60,7 +72,9 @@ export function VelkharSessionToolPanel({
           ? t('fieldKit')
           : openTool === 'character'
             ? character.name
-            : t('sessionMenu')
+            : openTool === 'journal'
+              ? t('travelJournal')
+              : t('sessionMenu')
       }
     >
       {openTool === 'inventory' ? (
@@ -69,6 +83,10 @@ export function VelkharSessionToolPanel({
 
       {openTool === 'character' ? (
         <VelkharCharacterSheet character={character} conditions={conditions} survival={survival} />
+      ) : null}
+
+      {openTool === 'journal' ? (
+        <VelkharTravelJournal location={location} narrative={narrative} run={run} />
       ) : null}
 
       {openTool === 'menu' ? (

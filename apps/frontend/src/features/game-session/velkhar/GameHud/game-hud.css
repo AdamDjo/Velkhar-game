@@ -2,8 +2,15 @@
   display: block;
 }
 
-.game-hud .game-hud-dock__content {
-  display: block;
+.game-hud.game-session-hud[data-has-gauges][data-has-resource] .game-hud-dock__content {
+  display: grid;
+  gap: var(--game-hud-content-gap);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.game-hud.game-session-hud[data-has-gauges][data-has-resource][data-has-tools='false']
+  .game-hud-dock__content {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .game-hud .game-session-hud__bars {
@@ -16,7 +23,13 @@
 }
 
 .game-hud .game-session-hud__tools {
-  display: none;
+  display: flex;
+  gap: var(--game-hud-tool-gap);
+}
+
+.game-hud .game-session-hud__tools .inventory-slot {
+  min-height: var(--game-hud-tool-size);
+  min-width: var(--game-hud-tool-size);
 }
 
 .game-hud .stat-bar__label {
@@ -65,7 +78,25 @@
   display: none;
 }
 
+@media (max-width: 1120px) {
+  .game-hud.game-session-hud[data-has-gauges][data-has-resource] .game-hud-dock__content,
+  .game-hud.game-session-hud[data-has-gauges][data-has-resource][data-has-tools='false']
+    .game-hud-dock__content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .game-hud .game-session-hud__tools {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 767px) {
+  .game-hud.game-session-hud[data-has-gauges][data-has-resource] .game-hud-dock__content,
+  .game-hud.game-session-hud[data-has-gauges][data-has-resource][data-has-tools='false']
+    .game-hud-dock__content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .game-hud .game-session-hud__bars {
     gap: 18px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -78,6 +109,10 @@
 
   .game-hud.game-session-hud {
     padding: 18px 12px;
+  }
+
+  .game-hud .game-session-hud__tools {
+    justify-content: center;
   }
 
   .game-hud .stat-bar__label {

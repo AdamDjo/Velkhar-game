@@ -1,0 +1,95 @@
+.game-scene__location {
+  font-family: var(--font-display);
+  font-size: var(--text-game-section);
+  min-width: 0;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.game-scene__location > span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.game-scene__location small {
+  color: var(--paper-muted);
+  display: block;
+  font-family: var(--font-ui);
+  font-size: var(--text-game-caption);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.game-scene__reader {
+  align-content: start;
+  display: grid;
+  gap: var(--game-scene-reader-gap);
+  min-height: 0;
+  padding: var(--game-scene-reader-padding-block) var(--game-scene-reader-padding-inline);
+}
+
+.game-scene__reader > :is(h1, h2, h3),
+.game-scene__reader > * > :is(h1, h2, h3) {
+  color: var(--material-gold);
+  font-family: var(--font-display);
+  font-size: var(--text-game-heading);
+  font-weight: 400;
+  line-height: 1.05;
+  margin: 0;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.game-scene__reader > p,
+.game-scene__reader .game-session-narrative .narrative-passage {
+  font-size: var(--game-scene-narrative-size);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--game-scene-narrative-leading);
+  margin: 0;
+  max-width: 40rem;
+}
+
+.game-scene__reader .game-session-narrative .narrative-passage p + p {
+  margin-top: 0.65rem;
+}
+
+.game-scene__choices,
+.game-scene__reader .game-session-choices {
+  display: grid;
+  gap: var(--game-scene-choice-gap);
+  margin-bottom: var(--game-scene-choice-margin);
+}
+
+.game-scene__response p {
+  font-size: var(--text-game-body-sm);
+  line-height: 1.35;
+}
+
+.game-scene__response:empty {
+  display: none;
+}
+
+@media (min-width: 1121px) and (min-height: 700px) {
+  .game-scene__reader {
+    overflow-y: auto;
+    scrollbar-color: color-mix(in srgb, var(--material-gold) 55%, transparent) transparent;
+    scrollbar-width: thin;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .game-scene__response {
+    animation: game-scene-response-enter var(--motion-page) var(--ease-velkhar-out);
+  }
+}
+
+@keyframes game-scene-response-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.625rem);
+  }
+}

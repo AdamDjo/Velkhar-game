@@ -77,6 +77,7 @@ export function GameSessionHud({
       className={`game-session-hud ${className ?? ''}`}
       data-has-gauges={statusGauges.length > 0 ? 'true' : 'false'}
       data-has-resource={resource ? 'true' : 'false'}
+      data-has-tools={tools.length > 0 ? 'true' : 'false'}
       label={label}
     >
       <div className="game-session-hud__bars">

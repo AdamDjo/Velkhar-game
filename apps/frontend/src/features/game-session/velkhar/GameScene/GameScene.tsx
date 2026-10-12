@@ -12,6 +12,8 @@ import { GameHud, type GameHudLabels, type GameHudProps } from '../GameHud/GameH
 
 import type { SurvivalStats } from '@velkhar/shared'
 
+import './game-scene.css'
+
 /** The free-text box under the choices. */
 export interface GameSceneComposer {
   label: string
@@ -90,7 +92,7 @@ export function GameScene({
           start={<span aria-hidden="true" />}
           center={
             <div className="game-scene__location">
-              {location}
+              <span>{location}</span>
               <small>{label}</small>
             </div>
           }

@@ -106,6 +106,12 @@ douce partagent une seule coque Encre de Sel et les mêmes primitives canoniques
 traces anonymes restent inchangés ; ce jalon ne change pas le `NO-GO` tant que la boucle roguelike
 complète n'est pas validée.
 
+État attendu après merge de #329 : la Game Session réelle reprend directement la preuve gameplay
+de la landing — même composition illustration/lecture, même HUD Survie et mêmes contrôles Encre de
+Sel — sans modifier le contrat backend ni les règles de jeu. Ce jalon retire le skin parallèle de la
+route de partie mais ne change pas le `NO-GO` tant que la boucle roguelike complète n'est pas
+validée.
+
 ## Post-déploiement
 
 Profil complet (#136), Chronologie (#130), Galerie (#131), World Map (#127), linking

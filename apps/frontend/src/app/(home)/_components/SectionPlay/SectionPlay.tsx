@@ -25,13 +25,7 @@ export function SectionPlay() {
         <p className="salt-eyebrow">{t('playLabel')}</p>
         <h2 id="play-title">{t('playTitle')}</h2>
       </header>
-      <GameScene
-        className="salt-demo"
-        hudClassName="salt-hud"
-        gaugeClassNames={{ thirst: 'salt-hud__thirst' }}
-        background={<LandingArt name="partie" />}
-        turn={turn}
-      />
+      <GameScene className="salt-demo" background={<LandingArt name="partie" />} turn={turn} />
     </section>
   )
 }

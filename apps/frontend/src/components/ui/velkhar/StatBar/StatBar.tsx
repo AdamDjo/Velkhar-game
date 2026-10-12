@@ -4,7 +4,7 @@ import type { CSSProperties, ReactNode } from 'react'
 
 import './stat-bar.css'
 
-export type StatBarTone = 'danger' | 'aqua' | 'ember'
+export type StatBarTone = 'danger' | 'aqua' | 'ember' | 'salt' | 'calamine'
 export type StatBarSize = 'sm' | 'md' | 'lg'
 
 export interface StatBarProps {

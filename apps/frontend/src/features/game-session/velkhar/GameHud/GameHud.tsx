@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 import { GameSessionHud } from '../../components/GameSessionHud'
 
+import type { GameSessionHudTool } from '../../components/GameSessionHud'
 import type { StatBarTone } from '@/components/ui/velkhar/StatBar/StatBar'
 import type { SurvivalStats } from '@velkhar/shared'
 
@@ -23,8 +24,8 @@ const GAUGES: readonly Gauge[] = [
   { id: 'blood', tone: 'danger', read: (s) => [s.hp, s.maxHp] },
   { id: 'breath', tone: 'aqua', read: (s) => [s.energy, 100] },
   { id: 'hunger', tone: 'ember', read: (s) => [s.hunger, 100] },
-  { id: 'thirst', tone: 'ember', read: (s) => [s.thirst, 100] },
-  { id: 'calamine', tone: 'ember', read: (s) => [s.calamine, 100] },
+  { id: 'thirst', tone: 'salt', read: (s) => [s.thirst, 100] },
+  { id: 'calamine', tone: 'calamine', read: (s) => [s.calamine, 100] },
 ]
 
 export interface GameHudLabels {
@@ -56,6 +57,8 @@ export interface GameHudProps {
    * gauge from its own stylesheet without this component knowing the theme.
    */
   gaugeClassNames?: Partial<Record<keyof GameHudLabels['gauges'], string>>
+  toolLabel?: string
+  tools?: readonly GameSessionHudTool[]
 }
 
 /**
@@ -64,7 +67,14 @@ export interface GameHudProps {
  * It holds no numbers and no copy of its own: a scripted snapshot and a live
  * run feed it the same shape, and neither needs this file to change.
  */
-export function GameHud({ survival, labels, className, gaugeClassNames }: GameHudProps) {
+export function GameHud({
+  survival,
+  labels,
+  className,
+  gaugeClassNames,
+  toolLabel,
+  tools = [],
+}: GameHudProps) {
   return (
     <GameSessionHud
       className={`game-hud ${className ?? ''}`}
@@ -82,7 +92,8 @@ export function GameHud({ survival, labels, className, gaugeClassNames }: GameHu
         }
       })}
       statusGauges={[]}
-      tools={[]}
+      toolLabel={toolLabel}
+      tools={tools}
     />
   )
 }
